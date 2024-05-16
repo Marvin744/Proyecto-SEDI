@@ -64,7 +64,7 @@
     <div id="divmodal"></div>
     <script>
     function mostrarDetalles(id){
-        var ruta = 'mimodal.php?persona='+id;
+        var ruta = 'modala_alerta_info.php?persona='+id;
         $.get(ruta,function(data){
             $('#divmodal').html(data);
             $('#mymodal').modal('show');
