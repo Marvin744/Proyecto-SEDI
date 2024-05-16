@@ -1,5 +1,5 @@
 <?php
-$persona = $_REQUEST['personas'];
+$persona = $_REQUEST['persona'];
 
 include_once 'bd/conexion.php';
 $objeto = new Conexion();
