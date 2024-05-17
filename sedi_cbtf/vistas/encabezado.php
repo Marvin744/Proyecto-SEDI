@@ -16,15 +16,16 @@
       <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
       <!-- style css -->
       <link rel="stylesheet" type="text/css" href="css/style.css">
+      <link rel="stylesheet" type="text/css" href="styles/style_index2.css">
       <!-- Tweaks for older IEs-->
       <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
   </head>
   <body>
-    <form method="POST">
       <!-- header section start -->
       <div class="header_section">
       <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #2e0812;">
-            <a class="logo" href="alerta.php"><img src="img/cbtf_logo.png"></a>
+            <a class="logo" href="alerta.php"><img src="img/logo_cbtf.jpg"></a>
+                <span style="color: #f7f6f2;">CBTF #2</span>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
             </button>
@@ -40,5 +41,78 @@
                <div class="search_icon"><a href="#"><img src="img/icono_cerrar_sesion.png"><span class="padding_left_15">Cerrar Sesión</span></a></div>
             </div>
          </nav>
-      </div>
+
+
+
+
+
+<!-- Barra Lateral --> 
+<form method="POST">        
+<div class="menu">
+        <ion-icon name="menu-outline"></ion-icon>
+        <ion-icon name="close-outline"></ion-icon>
+    </div>
+
+    <div class="barra-lateral">
+        <div>
+            <div class="nombre-pagina">
+                <ion-icon id="cloud" name="cloud-outline"></ion-icon>
+                <span>SEDI</span>
+            </div>
+            <button class="boton">
+                <ion-icon name="add-outline"></ion-icon>
+                <span>Create new</span>
+            </button>
+        </div>
+
+        <nav class="navegacion">
+            <ul>
+                <li>
+                    <a id="inbox" href="#">
+                        <ion-icon name="mail-unread-outline"></ion-icon>
+                        <span>Inbox</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <ion-icon name="star-outline"></ion-icon>
+                        <span>Horario Docentes</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <ion-icon name="paper-plane-outline"></ion-icon>
+                        <span>Subir Calificaciones</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="alerta.php">
+                        <ion-icon name="document-text-outline"></ion-icon>
+                        <span>Alertas</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <ion-icon name="bookmark-outline"></ion-icon>
+                        <span>Important</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <ion-icon name="alert-circle-outline"></ion-icon>
+                        <span>Spam</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <ion-icon name="trash-outline"></ion-icon>
+                        <span>Trash</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+    </div>
 </form>
+
+    <main>
