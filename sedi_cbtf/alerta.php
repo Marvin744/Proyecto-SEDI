@@ -1,3 +1,4 @@
+<?php require_once "vistas/encabezado.php"?>
 <?php 
 	include_once 'bd/conexion.php';
     $objeto = new Conexion();
@@ -12,6 +13,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <title>Alertas</title>
     </head>
+    
     <body>
         <br> 
             <table class="table" border="1">
@@ -60,7 +62,7 @@
         <div class="container">
         <div class="row">
             <div class="col-lg-12">            
-            <button id="btnInsertarAlerta" type="submit" class="btn" data-toggle="modal" href="login.html">Agregar Reporte</button>
+            <button id="btnInsertarAlerta" type="submit" class="btn" data-toggle="modal">Agregar Reporte</button>
             </div>    
         </div>    
     </div>    
@@ -68,7 +70,7 @@
     <div id="divmodal"></div>
     <script>
     function mostrarDetalles(id){
-        var ruta = 'modal_alerta_info..php?persona='+id;
+        var ruta = 'modal_alerta_info.php?persona='+id;
         $.get(ruta,function(data){
             $('#divmodal').html(data);
             $('#mymodal').modal('show');
@@ -79,3 +81,4 @@
     </body>
 </form>
 </html>
+<?php require_once "vistas/pie_pagina.php"?>

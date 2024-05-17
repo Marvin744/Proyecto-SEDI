@@ -1,3 +1,4 @@
+<?php require_once "vistas/encabezado.php"?>
 <?php 
 	include_once 'bd/conexion.php';
     $objeto = new Conexion();

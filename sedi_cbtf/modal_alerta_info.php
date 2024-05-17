@@ -6,7 +6,7 @@ $objeto = new Conexion();
 $conexion = $objeto->Conectar(); 
     
 
-$sql="SELECT * from alertas";
+$sql="SELECT * from alertas where $persona=id_alerta";
 $query = $conexion->prepare($sql);
 $query->execute();
 $mostrar = $query->fetch();
