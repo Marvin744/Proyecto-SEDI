@@ -1,0 +1,78 @@
+.root{
+    --primario: #631328
+}
+
+/* Clase para ocultar */
+.form-page {
+    display: none;
+}
+/* Clase para mostrar */
+.form-page.active {
+    display: block;
+}
+
+.form-control { max-width: 60rem; }
+.form-check { margin-bottom: 15px; }
+.form-check-label { margin-left: 5px; }
+.hidden { display: none; }
+
+.button_slide {
+    color: #000000;
+    border: 2px solid #631328;
+    border-radius: 1rem;
+    padding: 1.2rem 2.2rem;
+    display: inline-block;
+    font-family: "Lucida Console", Monaco, monospace; 
+    font-size: 1.8rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    box-shadow: inset 0 0 0 0 #631328;
+    -webkit-transition: ease-out 0.4s;
+    -moz-transition: ease-out 0.4s;
+    transition: ease-out 0.4s;
+    font-weight: bold;
+    display: none;
+    align-content: center;
+  }
+  .butto_slide {
+    color: #000000;
+    border: 2px solid #631328;
+    border-radius: 1rem;
+    padding: 1.2rem 2.2rem;
+    display: inline-block;
+    font-family: "Lucida Console", Monaco, monospace; 
+    font-size: 1.8rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    box-shadow: inset 0 0 0 0 #631328;
+    -webkit-transition: ease-out 0.4s;
+    -moz-transition: ease-out 0.4s;
+    transition: ease-out 0.4s;
+    font-weight: bold;
+    align-content: center;
+  }
+  
+
+  .slide_down:hover {
+    box-shadow: inset 0 100px 0 0 #631328;
+    color: #fffdfd;
+  }
+  
+  .slide_right:hover {
+    box-shadow: inset 400px 0 0 0 #D80286;
+  }
+  
+  .slide_left:hover {   
+    box-shadow: inset 0 0 0 50px #D80286;
+  }
+  
+  .slide_diagonal:hover {
+    box-shadow: inset 400px 50px 0 0 #D80286;
+  }
+  
+  #outer {
+    width: 364px;
+    margin: 50px auto 0 auto;
+    text-align: center;
+
+  } 
