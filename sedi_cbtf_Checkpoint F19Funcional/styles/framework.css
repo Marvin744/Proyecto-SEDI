@@ -1,0 +1,156 @@
+:root {/* Los selecotres que empiezan con : se les conoce como seudoelementos. */
+    --blanco: #ffffff;
+    --oscuro: #212121;
+    --primario: #6b0c00;
+    --secundario: #001fa8;
+    --gris: #757575;
+    --gris-claro: #DFE9F3;
+}
+
+/* Segmento para optimizar el escalado dependiendo el navegador con el uso de rems */
+/* Globales */
+html {
+    font-size: 62.5%;
+    box-sizing: border-box;
+}
+
+body {
+    font-size: 16px; /* Lo que hacen es fijar el valor de 1rem = 10px lo que facilita el uso de los rem*/
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.8rem;
+    background-image: linear-gradient(to top, var(--gris-claro) 0%, var(--blanco) 100%); /* Agrega n color de degradado lineal, hacia donde va, el color de inicio y el porcentaje de este, el color final y el porcentaje de uso */
+    background-repeat: no-repeat;
+}
+
+/* ALINEACIONES */
+
+.alinear-derecha {
+    border: none;
+    text-align: right;
+}
+
+.alinear-centro {
+    border: none;
+    text-align: center;
+}
+
+.alinear-izquierda {
+    border: none;
+    text-align: left;
+}
+
+/* BARRA DE NAVEGACIÓN */
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--primario);
+    padding: 10px 20px;
+}
+
+.centrar .navbar span {
+    justify-content: center;
+    align-items: center;
+}
+
+.logo img {
+    height: 4rem;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links li {
+    margin-left: 20px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    padding: 10px;
+}
+
+.nav-links a:hover {
+    background-color: #575757;
+    border-radius: 4px;
+}
+
+
+/* FORMATO PARA TABLA */
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th {
+    border: 1px solid #dddddd;
+    text-align: center;
+    padding: .8rem;
+}
+
+td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: .8rem;
+} 
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.pagination button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 2rem 1.5rem;
+    border: none;
+    cursor: pointer;
+    margin: 0 .4rem;
+}
+
+.pagination button:hover {
+    background-color: #45a049;
+
+}
+
+/* .dataTables_wrapper .dataTables_paginate .paginate_button {
+    padding: 5px 15px;
+    margin-left: 5px;
+    background: #4CAF50;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: #45a049;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+    padding: 5px;
+    margin-left: 5px;
+    border-radius: 3px;
+    border: 1px solid #ddd;
+}
+
+.dataTables_wrapper .dataTables_length select {
+    padding: 5px;
+    margin-left: 5px;
+    border-radius: 3px;
+    border: 1px solid #ddd;
+} */
+
