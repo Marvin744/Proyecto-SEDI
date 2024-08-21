@@ -1,0 +1,1 @@
+<!-- INSERT INTO `docentes` (`id_docente`, `nombre_docente`, `apellido_paterno`, `apellido_materno`, `RFC`, `grupo_edad`, `tipo_plaza`, `formacion_academica`, `antiguedad`, `nivel_estudios`) VALUES ('123', 'Javier', 'López', 'Santa Ana', 'ABCD123456A1B', '25-29', 'Completo', 'Tecnologías de la Información y la Comunicación', '5-9', 'Maestría'); -->
