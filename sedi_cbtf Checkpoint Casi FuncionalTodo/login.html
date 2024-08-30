@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- <script src="scripts.js"></script> -->
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Lasat-Modified" content="0">
+    <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+
+    <title>Inicio de Sesión</title>
+
+    <script src="https://kit.fontawesome.com/a2dd6045c4.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="styles/normalize.css">
+    <link rel="preload" href="styles/style.css?ver=1.00" as="style">
+    <link rel="stylesheet" href="styles/style.css?ver=1.00">
+</head>
+<body>
+    <section>
+        <div class="contenedor">
+            <form class="formulario" method="POST" onsubmit="return validarLogin();">
+                <h2>Inicio de Sesión</h2>
+
+                <div class="input-contenedor">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input id="usuario" class="usuario" type="text" name="usuario" required>
+                    <label for="usuario">Usuario</label> <!-- Asociado con el input -->
+                </div>
+                
+                <div class="input-contenedor">
+                    <i class="fa-regular fa-eye"></i>
+                    <i class="fa-solid fa-lock"></i>
+                    <input id="password" type="password" name="password" required>
+                    <label for="password">Contraseña</label> <!-- Asociado con el input -->
+                </div>
+
+                <div id="error-message" role="alert"></div> <!-- Mensaje de error, accesible -->
+
+                <div id="olvidar-psw" class="olvidar" style="display: none;">
+                    <label for="recordar">
+                        <a href="#">Olvidé la contraseña</a>
+                    </label>
+                </div>
+
+                <div class="button_padre">
+                    <input class="button" type="submit" value="Acceder">
+                    <div class="registrar">
+                        <p>¿No tienes una cuenta? <a href="#">Crea una cuenta aquí</a></p>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <script>
+        function mostrarMensajeError(mensaje) {
+            const errorMessage = document.getElementById('error-message');
+            errorMessage.style.display = 'block';
+            errorMessage.textContent = mensaje;
+    
+            // Ocultar el mensaje de error al hacer clic en cualquier lugar del documento
+            function hideErrorMessage(event) {
+                // Verifica si el clic fue fuera del mensaje de error
+                if (!errorMessage.contains(event.target) && event.target.tagName !== 'FORM') {
+                    errorMessage.style.display = 'none';
+                    document.removeEventListener('click', hideErrorMessage); // Remover el event listener después de ocultar
+                }
+            }
+    
+            document.addEventListener('click', hideErrorMessage);
+        }
+    
+        document.addEventListener('DOMContentLoaded', function () {
+            const emailInput = document.getElementById('usuario');
+            const forgotPasswordDiv = document.getElementById('olvidar-psw');
+    
+            emailInput.addEventListener('input', function () {
+                if (emailInput.value.includes('@')) {
+                    forgotPasswordDiv.style.display = 'flex';
+                } else {
+                    forgotPasswordDiv.style.display = 'none';
+                }
+            });
+        });
+    
+        function validarLogin() {
+            const usuario = document.getElementById('usuario').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('error-message');
+    
+            // Limpiar el mensaje de error previo
+            errorMessage.style.display = 'none';
+            errorMessage.textContent = "";
+    
+            // Enviar datos al servidor para la validación
+            const formData = new FormData();
+            formData.append('usuario', usuario);
+            formData.append('password', password);
+    
+            fetch('General_Actions/validar_usuario.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Error en la conexión.");
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.status === "success") {
+                    // Redirigir según el perfil del usuario
+                    switch(data.perfil) {
+                        case 'Admin':
+                            window.location.href = 'index/index_admin.php';
+                            break;
+                        case 'Alumno':
+                            window.location.href = 'index/index_alumno.php';
+                            break;
+                        case 'Docente':
+                            window.location.href = 'index/index_docente.php';
+                            break;
+                        case 'Administrativo':
+                            window.location.href = 'index/index_administrativo.php';
+                            break;
+                        case 'Directivo':
+                            window.location.href = 'index/index_directivo.php';
+                            break;
+                        default:
+                            mostrarMensajeError("Perfil de usuario no reconocido.");
+                    }
+                } else if (data.status === "change_password") {
+                    // Redirigir al formulario de cambio de contraseña
+                    window.location.href = 'Usuarios/form_actualiza_password.php';
+                } else {
+                    mostrarMensajeError(data.message);
+                }
+            })
+            .catch(error => {
+                mostrarMensajeError("Error en la conexión. Por favor, inténtelo de nuevo.");
+            });
+    
+            return false;  // Evita el envío del formulario
+        }
+    </script>
+</body>
+</html>
