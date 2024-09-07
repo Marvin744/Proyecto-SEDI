@@ -1,0 +1,17 @@
+En esta versión se tiene casi todo completado, solo falta:
+- Arreglar disparador notificaciones
+- Arreglar fila Total tabla F19 PDF
+- Modificar script obtención datos del Excel para el F19
+- Arreglar Asistencias por asignación de asignatura
+- Arreglar Calificaciones por asignación de asignatura
+- Validación de perfiles
+- Creación perfiles de usuario para psicólogo, docente-administrativo y docente-directivo
+- Validación NA, NP y A para reinscripción del alumno
+
+Ya tiene la mayor parte del diseño listo, F19 funcional, Alertas funcional, Inscripciones y Reinscripciones funcional, login funcional, y medidas de seguridad para inyección SQL, e interceptación de paquetes funcional.
+
+
+
+
+
+©Copyright SEDI 2024. Todos los derechos reservados. Nota parche versión 1.0.1.6.
