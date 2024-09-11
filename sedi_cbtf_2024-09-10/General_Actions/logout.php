@@ -2,5 +2,5 @@
     session_start();
     //session_destroy();
     $_SESSION = [];
-    header("location: ../login.html"); die;
+    header("location: ../index.html"); die;
 ?>
