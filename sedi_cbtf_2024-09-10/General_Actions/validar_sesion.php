@@ -2,6 +2,6 @@
     session_start();
 
     if (!isset($_SESSION['user'])) {
-        header("location: ../login.html"); die;
+        header("location: ../index.html"); die;
     } 
 ?>
