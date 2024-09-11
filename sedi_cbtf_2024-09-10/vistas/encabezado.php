@@ -10,6 +10,8 @@
         exit;
     }
     $perfil = $_SESSION['perfil'];
+
+    $sidebarState = "<script>document.write(localStorage.getItem('sidebarState'));</script>";
 ?>
 
 <!DOCTYPE html>
@@ -24,6 +26,36 @@
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<!-- 
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Al cargar la página, verificamos el estado guardado en localStorage
+            const sidebar = document.querySelector(".barra-lateral");
+            const mainContent = document.querySelector("main");
+
+            if (localStorage.getItem("sidebarState") === "collapsed") {
+                sidebar.classList.add("collapsed");
+                mainContent.classList.add("min-main");
+            }
+        });
+    </script> -->
+
+    <script>
+        // Aplica el estado de la barra lateral inmediatamente sin transiciones al cargar la página
+        (function() {
+            const sidebarState = localStorage.getItem("sidebarState");
+            const html = document.documentElement;
+            const sidebar = document.querySelector(".barra-lateral");
+            const mainContent = document.querySelector("main");
+
+            // Aplica el estado almacenado en localStorage inmediatamente
+            if (sidebarState === "collapsed") {
+                html.classList.add("sidebar-collapsed"); // Aplicar inmediatamente al <html>
+                sidebar.classList.add("collapsed");
+                mainContent.classList.add("min-main");
+            }
+        })();
+    </script>
 
     <script>
         $(document).ready(function() {
@@ -324,11 +356,11 @@
             <ion-icon name="close-outline"></ion-icon>
         </div>
 
-        <div class="barra-lateral">
+        <div class="barra-lateral <?php echo $sidebarState == 'collapsed' ? 'collapsed' : ''; ?>">
             <div>
                 <div class="nombre-pagina">
-                    <ion-icon id="cloud" name="cloud-outline"></ion-icon>
-                    <a>SEDI</a>
+                    <ion-icon id="toggle-sidebar" name="menu"></ion-icon>
+                    <span>SEDI</span>
                 </div>
                 <!-- <a class="boton" href="../Inscripcion/form_procesa_inscripcion2.php">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-school" width="36"
@@ -342,19 +374,16 @@
                 </a> -->
             </div>
 
-            <?php
-                // Define el nombre de la página actual usando `basename()`
-                $currentPage = basename($_SERVER['PHP_SELF']);
-
-            ?>
-
             <nav class="navegacion">
                 <ul>
                     <?php
+                    // Define el nombre de la página actual usando `basename()`
+                    $currentPage = basename($_SERVER['PHP_SELF']);
+
                     switch ($perfil) {
                         // Perfil PODEROSÍSIMO ADMIN
                         case 'Admin':
-                            echo '<a class="boton ' . ($currentPage == 'form_procesa_inscripcion2.php' ? 'active' : '') . '" href="../Inscripcion/form_procesa_inscripcion2.php">
+                            echo '<a class="boton ' . (($currentPage == 'form_procesa_inscripcion2.php' || $currentPage == 'form_calificacionAlumno.php') ? 'active' : '') . '" href="../Inscripcion/form_procesa_inscripcion2.php">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-school" width="36"
                                         height="36" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none"
                                         stroke-linecap="round" stroke-linejoin="round">
@@ -364,32 +393,31 @@
                                     </svg>
                                     <span>Alumnos</span>
                                 </a>';
-                            echo '<li><a class="' . ($currentPage == 'form_docente_f19.php' ? 'active' : '') . '" href="../Docentes/form_docente_f19.php"><ion-icon name="person-outline"></ion-icon><span>Personal y F19</span></a></li>';
+                            echo '<li><a class="' . ($currentPage == 'form_inscripcion_alumno.php' ? 'active' : '') . '" href="../Inscripcion/form_inscripcion_alumno.php"><ion-icon name="person-outline"></ion-icon><span>Inscripción</span></a></li>';
+                            echo '<li><a class="' . (($currentPage == 'form_docente_f19.php' || $currentPage == 'form_tablaF19.php' || $currentPage == 'form_editar_docente.php') ? 'active' : '') . '" href="../Docentes/form_docente_f19.php"><ion-icon name="person-outline"></ion-icon><span>Personal y F19</span></a></li>';
                             echo '<li><a class="' . ($currentPage == 'form_alta_docente.php' ? 'active' : '') . '" href="../Docentes/form_alta_docente.php"><ion-icon name="person-add-outline"></ion-icon><span>Registrar Personal</span></a></li>';
-                            echo '<li><a class="' . ($currentPage == 'form_perfilUsuario.php' ? 'active' : '') . '" href="../Usuarios/form_perfilUsuario.php"><ion-icon name="people-outline"></ion-icon><span>Gestionar Usuarios</span></a></li>';
+                            echo '<li><a class="' . (($currentPage == 'form_perfilUsuario.php' || $currentPage == 'form_modificar_perfil.php') ? 'active' : '') . '" href="../Usuarios/form_perfilUsuario.php"><ion-icon name="people-outline"></ion-icon><span>Gestionar Usuarios</span></a></li>';
                             echo '<li><a class="' . ($currentPage == 'form_alerta.php' ? 'active' : '') . '" href="../Alertas/form_alerta.php"><ion-icon name="document-text-outline"></ion-icon><span>Alertas</span></a></li>';
                             echo '<li><a class="' . ($currentPage == 'form_agregarAlerta.php' ? 'active' : '') . '" href="../Alertas/form_agregarAlerta.php"><ion-icon name="alert-circle-outline"></ion-icon><span>Nueva Alerta</span></a></li>';
                             echo '<li><a class="' . ($currentPage == 'form_olvidar_password.php' ? 'active' : '') . '" href="../Usuarios/form_olvidar_password.php"><ion-icon name="lock-open-outline"></ion-icon><span>Reset PSW Personal</span></a></li>';
-                            echo '<li><a class="' . ($currentPage == 'form_asignarGrupos.php' ? 'active' : '') . '" href="../Asignar_Grupo/form_asignarGrupos"><ion-icon name="cube-outline"></ion-icon><span>Grupos</span></a></li>';
+                            echo '<li><a class="' . (($currentPage == 'form_asignarGrupos.php' || $currentPage == 'form_asignar_grupo1.php' || $currentPage == 'form_asignar_grupo2.php' || $currentPage == 'form_asignar_grupo3.php') ? 'active' : '') . '" href="../Asignar_Grupo/form_asignarGrupos.php"><ion-icon name="cube-outline"></ion-icon><span>Grupos</span></a></li>';
                             echo '<li><a class="' . ($currentPage == 'form_asignarMateria.php' ? 'active' : '') . '" href="../Asignar_Materia/form_asignarMateria.php"><ion-icon name="color-palette-outline"></ion-icon><span>Materias</span></a></li>';
-                            echo '<li><a class="' . ($currentPage == 'form_calAsis_alumnos.php' ? 'active' : '') . '" href="../Calificaciones/form_calAsis_alumnos.php"><ion-icon name="book-outline"></ion-icon><span>Asis. y Califcsns.</span></a></li>';
+                            echo '<li><a class="' . (($currentPage == 'form_calAsis_alumnos.php' || $currentPage == 'form_asistencias_alumnos_p1.php' || $currentPage == 'form_asistencias_alumnos_p2.php' || $currentPage == 'form_asistencias_alumnos_p3.php' 
+                                                    || $currentPage == 'form_caliAsis_alumnos_p1.php' || $currentPage == 'form_caliAsis_alumnos_p2.php' || $currentPage == 'form_caliAsis_alumnos_p3.php') ? 'active' : '') . '" href="../Calificaciones/form_calAsis_alumnos.php"><ion-icon name="book-outline"></ion-icon><span>Asis. y Califcsns.</span></a></li>';
                             echo '<li><a class="' . ($currentPage == 'form_reportesDocentes.php' ? 'active' : '') . '" href="../Reportes/form_reportesDocentes.php"><ion-icon name="documents-outline"></ion-icon><span>Reportes Personal</span></a></li>';
                             echo '<li><a class="' . ($currentPage == 'form_habilitar_subida.php' ? 'active' : '') . '" href="../Calificaciones/form_habilitar_subida.php"><ion-icon name="construct-outline"></ion-icon><span>Acciones del Sistema</span></a></li>';
                             break;
 
                         // Perfil DOCENTE
                         case 'Docente':
-                            echo '<a class="boton" href="../Calificaciones/form_calAsis_alumnos.php">
-                                    <ion-icon name="book-outline"></ion-icon><span>Calificaciones</span>
-                                </a>';
-                            // echo '<li><a href="../Calificaciones/form_calAsis_alumnos.php"><ion-icon name="book-outline"></ion-icon><span>Calificaciones</span></a></li>';
-                            echo '<li><a href="../Alertas/form_agregarAlerta.php"><ion-icon name="clipboard-outline"></ion-icon><span>Alertas</span></a></li>';
-                            echo '<li><a href="../vistas/proximamente.php"><ion-icon name="eye-outline"></ion-icon><span>Reportes Hechos</span></a></li>';
+                            echo '<a class="' . (($currentPage == 'form_calAsis_alumnos.php' || $currentPage == 'form_asistencias_alumnos_p1.php' || $currentPage == 'form_asistencias_alumnos_p2.php' || $currentPage == 'form_asistencias_alumnos_p3.php' 
+                                                    || $currentPage == 'form_caliAsis_alumnos_p1.php' || $currentPage == 'form_caliAsis_alumnos_p2.php' || $currentPage == 'form_caliAsis_alumnos_p3.php') ? 'active' : '') . '" href="../Calificaciones/form_calAsis_alumnos.php"><ion-icon name="book-outline"></ion-icon><span>Asis. y Califcsns.</span></a>';
+                            echo '<li><a class="' . ($currentPage == 'form_agregarAlerta.php' ? 'active' : '') . '" href="../Alertas/form_agregarAlerta.php"><ion-icon name="alert-circle-outline"></ion-icon><span>Nueva Alerta</span></a></li>';
+                            echo '<li><a class="' . ($currentPage == 'proximamente.php.php' ? 'active' : '') . '" href="../vistas/proximamente.php"><ion-icon name="eye-outline"></ion-icon><span>Reportes Hechos</span></a></li>';
                             break;
 
                         // Perfil ADMINISTRATIVO Y DOCENTE
-                        case 'Administrativo-docente':
-                            echo '<a class="boton" href="../Docentes/form_docente_f19">
+                        echo '<a class="boton ' . (($currentPage == 'form_procesa_inscripcion2.php' || $currentPage == 'form_calificacionAlumno.php') ? 'active' : '') . '" href="../Inscripcion/form_procesa_inscripcion2.php">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-school" width="36"
                                         height="36" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none"
                                         stroke-linecap="round" stroke-linejoin="round">
@@ -397,50 +425,37 @@
                                         <path d="M22 9l-10 -4l-10 4l10 4l10 -4v6" />
                                         <path d="M6 10.6v5.4a6 3 0 0 0 12 0v-5.4" />
                                     </svg>
-                                    <span> Formato 19</span>
+                                    <span>Alumnos</span>
                                 </a>';
-                            echo '<li><a href="../Docentes/form_alta_docente"><ion-icon name="home-outline"></ion-icon><span>Alta Docente</span></a></li>';
-                            echo '<li><a href="../Usuarios/form_olvidar_password.php"><ion-icon name="book-outline"></ion-icon><span>Reseteo Password</span></a></li>';
-                            echo '<li><a href="../Alertas/form_agregarAlerta.php"><ion-icon name="clipboard-outline"></ion-icon><span>Alertas</span></a></li>';
+                            echo '<li><a class="' . ($currentPage == 'form_inscripcion_alumno.php' ? 'active' : '') . '" href="../Inscripcion/form_inscripcion_alumno.php"><ion-icon name="person-outline"></ion-icon><span>Inscripción</span></a></li>';
+                            echo '<li><a class="' . (($currentPage == 'form_docente_f19.php' || $currentPage == 'form_tablaF19.php' || $currentPage == 'form_editar_docente.php') ? 'active' : '') . '" href="../Docentes/form_docente_f19.php"><ion-icon name="person-outline"></ion-icon><span>Personal y F19</span></a></li>';
+                            echo '<li><a class="' . ($currentPage == 'form_olvidar_password.php' ? 'active' : '') . '" href="../Usuarios/form_olvidar_password.php"><ion-icon name="lock-open-outline"></ion-icon><span>Reset PSW Personal</span></a></li>';
+                            echo '<li><a class="' . (($currentPage == 'form_asignarGrupos.php' || $currentPage == 'form_asignar_grupo1.php' || $currentPage == 'form_asignar_grupo2.php' || $currentPage == 'form_asignar_grupo3.php') ? 'active' : '') . '" href="../Asignar_Grupo/form_asignarGrupos.php"><ion-icon name="cube-outline"></ion-icon><span>Grupos</span></a></li>';
+                            echo '<li><a class="' . ($currentPage == 'form_asignarMateria.php' ? 'active' : '') . '" href="../Asignar_Materia/form_asignarMateria.php"><ion-icon name="color-palette-outline"></ion-icon><span>Materias</span></a></li>';
+                            echo '<li><a class="' . ($currentPage == 'form_agregarAlerta.php' ? 'active' : '') . '" href="../Alertas/form_agregarAlerta.php"><ion-icon name="alert-circle-outline"></ion-icon><span>Nueva Alerta</span></a></li>';
+                            echo '<li><a class="' . (($currentPage == 'form_calAsis_alumnos.php' || $currentPage == 'form_asistencias_alumnos_p1.php' || $currentPage == 'form_asistencias_alumnos_p2.php' || $currentPage == 'form_asistencias_alumnos_p3.php' 
+                                                    || $currentPage == 'form_caliAsis_alumnos_p1.php' || $currentPage == 'form_caliAsis_alumnos_p2.php' || $currentPage == 'form_caliAsis_alumnos_p3.php') ? 'active' : '') . '" href="../Calificaciones/form_calAsis_alumnos.php"><ion-icon name="book-outline"></ion-icon><span>Asis. y Califcsns.</span></a></i>';
+                            echo '<li><a class="' . ($currentPage == 'proximamente.php.php' ? 'active' : '') . '" href="../vistas/proximamente.php"><ion-icon name="eye-outline"></ion-icon><span>Reportes Hechos</span></a></li>';
                             break;
 
                         // Perfil PSICOLOGO-DOCENTE
                         case 'Psicologo-docente':
-                            echo '<a class="boton" href="../Inscripcion/form_procesa_inscripcion2.php">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-school" width="36"
-                                        height="36" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none"
-                                        stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M22 9l-10 -4l-10 4l10 4l10 -4v6" />
-                                        <path d="M6 10.6v5.4a6 3 0 0 0 12 0v-5.4" />
-                                    </svg>
-                                    <span>Alumnos</span>
-                                </a>';
-                            echo '<li><a href="#"><ion-icon name="home-outline"></ion-icon><span>Dashboard Directivo</span></a></li>';
-                            echo '<li><a href="#"><ion-icon name="people-outline"></ion-icon><span>Gestionar Personal</span></a></li>';
-                            echo '<li><a href="#"><ion-icon name="bulb-outline"></ion-icon><span>Planificación Estratégica</span></a></li>';
+                            echo '<a class="' . ($currentPage == 'form_alerta.php' ? 'active' : '') . '" href="../Alertas/form_alerta.php"><ion-icon name="document-text-outline"></ion-icon><span>Alertas</span></a>';
+                            echo '<li><a class="' . ($currentPage == 'form_agregarAlerta.php' ? 'active' : '') . '" href="../Alertas/form_agregarAlerta.php"><ion-icon name="alert-circle-outline"></ion-icon><span>Nueva Alerta</span></a></li>';
+                            echo '<li><a class="' . (($currentPage == 'form_calAsis_alumnos.php' || $currentPage == 'form_asistencias_alumnos_p1.php' || $currentPage == 'form_asistencias_alumnos_p2.php' || $currentPage == 'form_asistencias_alumnos_p3.php' 
+                                                    || $currentPage == 'form_caliAsis_alumnos_p1.php' || $currentPage == 'form_caliAsis_alumnos_p2.php' || $currentPage == 'form_caliAsis_alumnos_p3.php') ? 'active' : '') . '" href="../Calificaciones/form_calAsis_alumnos.php"><ion-icon name="book-outline"></ion-icon><span>Asis. y Califcsns.</span></a></li>';
+                            echo '<li><a class="' . ($currentPage == 'proximamente.php' ? 'active' : '') . '" href="../vistas/proximamente.php"><ion-icon name="eye-outline"></ion-icon><span>Reportes Hechos</span></a></li>';
                             break;
 
                         // Perfil ALUMNO
                         case 'Alumno':
-                            echo '<a class="boton" href="../Inscripcion/form_procesa_inscripcion2.php">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-school" width="36"
-                                        height="36" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none"
-                                        stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M22 9l-10 -4l-10 4l10 4l10 -4v6" />
-                                        <path d="M6 10.6v5.4a6 3 0 0 0 12 0v-5.4" />
-                                    </svg>
-                                    <span>Alumnos</span>
-                                </a>';
-                            echo '<li><a href="#"><ion-icon name="home-outline"></ion-icon><span>Dashboard Alumno</span></a></li>';
-                            echo '<li><a href="#"><ion-icon name="eye-outline"></ion-icon><span>Ver Calificaciones</span></a></li>';
-                            echo '<li><a href="#"><ion-icon name="calendar-outline"></ion-icon><span>Horario</span></a></li>';
+                            echo '<a class="' . ($currentPage == 'form_calificacionAlumno.php' ? 'active' : '') . '" href="../Calificaciones/form_calificacionAlumno.php"><ion-icon name="eye-outline"></ion-icon><span>Calificaciones</span></a>';
+                            echo '<li><a href="proximamente.php"><ion-icon name="calendar-outline"></ion-icon><span>Horario</span></a></li>';
                             break;
 
                         // Perfil ADMINISTRATIVO
                         case 'Administrativo':
-                            echo '<a class="boton" href="../Inscripcion/form_procesa_inscripcion2.php">
+                            echo '<a class="boton ' . (($currentPage == 'form_procesa_inscripcion2.php' || $currentPage == 'form_calificacionAlumno.php') ? 'active' : '') . '" href="../Inscripcion/form_procesa_inscripcion2.php">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-school" width="36"
                                         height="36" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none"
                                         stroke-linecap="round" stroke-linejoin="round">
@@ -450,15 +465,17 @@
                                     </svg>
                                     <span>Alumnos</span>
                                 </a>';
-                            echo '<li><a href="../Inscripcion/inscripcion_alumno.php"><ion-icon name="home-outline"></ion-icon><span>Inscribir Alumno</span></a></li>';
-                            echo '<li><a href="../Docentes/docente_f19"><ion-icon name="folder-outline"></ion-icon><span>Docentes</span></a></li>';
-                            echo '<li><a href="../Usuarios/usuarios_alumnos.php"><ion-icon name="checkmark-outline"></ion-icon><span>Usuarios Alumnos</span></a></li>';
-                            echo '<li><a href="../Usuarios/olvidar_password.php"><ion-icon name="checkmark-outline"></ion-icon><span>Resetear Docente</span></a></li>';
+                            echo '<li><a class="' . ($currentPage == 'form_inscripcion_alumno.php' ? 'active' : '') . '" href="../Inscripcion/form_inscripcion_alumno.php"><ion-icon name="person-outline"></ion-icon><span>Inscripción</span></a></li>';
+                            echo '<li><a class="' . (($currentPage == 'form_docente_f19.php' || $currentPage == 'form_tablaF19.php' || $currentPage == 'form_editar_docente.php') ? 'active' : '') . '" href="../Docentes/form_docente_f19.php"><ion-icon name="person-outline"></ion-icon><span>Personal y F19</span></a></li>';
+                            echo '<li><a class="' . ($currentPage == 'form_olvidar_password.php' ? 'active' : '') . '" href="../Usuarios/form_olvidar_password.php"><ion-icon name="lock-open-outline"></ion-icon><span>Reset PSW Personal</span></a></li>';
+                            echo '<li><a class="' . (($currentPage == 'form_asignarGrupos.php' || $currentPage == 'form_asignar_grupo1.php' || $currentPage == 'form_asignar_grupo2.php' || $currentPage == 'form_asignar_grupo3.php') ? 'active' : '') . '" href="../Asignar_Grupo/form_asignarGrupos.php"><ion-icon name="cube-outline"></ion-icon><span>Grupos</span></a></li>';
+                            echo '<li><a class="' . ($currentPage == 'form_asignarMateria.php' ? 'active' : '') . '" href="../Asignar_Materia/form_asignarMateria.php"><ion-icon name="color-palette-outline"></ion-icon><span>Materias</span></a></li>';
+                            echo '<li><a class="' . ($currentPage == 'form_agregarAlerta.php' ? 'active' : '') . '" href="../Alertas/form_agregarAlerta.php"><ion-icon name="alert-circle-outline"></ion-icon><span>Nueva Alerta</span></a></li>';
                             break;
 
                         // Perfil ADMINISTRATIVO DOCENTES
                         case 'Administrativo_Docente':
-                            echo '<a class="boton" href="../Docentes/form_docente_f19">
+                            echo '<a class="boton ' . (($currentPage == 'form_procesa_inscripcion2.php' || $currentPage == 'form_calificacionAlumno.php') ? 'active' : '') . '" href="../Inscripcion/form_procesa_inscripcion2.php">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-school" width="36"
                                         height="36" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none"
                                         stroke-linecap="round" stroke-linejoin="round">
@@ -466,18 +483,21 @@
                                         <path d="M22 9l-10 -4l-10 4l10 4l10 -4v6" />
                                         <path d="M6 10.6v5.4a6 3 0 0 0 12 0v-5.4" />
                                     </svg>
-                                    <span> Formato 19</span>
+                                    <span>Alumnos</span>
                                 </a>';
-                            echo '<li><a href="../Docentes/form_alta_docente"><ion-icon name="home-outline"></ion-icon><span>Alta Docente</span></a></li>';
-                            echo '<li><a href="../Usuarios/form_olvidar_password.php"><ion-icon name="book-outline"></ion-icon><span>Reseteo Password</span></a></li>';
-                            echo '<li><a href="../Alertas/form_agregarAlerta.php"><ion-icon name="clipboard-outline"></ion-icon><span>Alertas</span></a></li>';
+                            echo '<li><a class="' . ($currentPage == 'form_inscripcion_alumno.php' ? 'active' : '') . '" href="../Inscripcion/form_inscripcion_alumno.php"><ion-icon name="person-outline"></ion-icon><span>Inscripción</span></a></li>';
+                            echo '<li><a class="' . (($currentPage == 'form_docente_f19.php' || $currentPage == 'form_tablaF19.php' || $currentPage == 'form_editar_docente.php') ? 'active' : '') . '" href="../Docentes/form_docente_f19.php"><ion-icon name="person-outline"></ion-icon><span>Personal y F19</span></a></li>';
+                            echo '<li><a class="' . ($currentPage == 'form_olvidar_password.php' ? 'active' : '') . '" href="../Usuarios/form_olvidar_password.php"><ion-icon name="lock-open-outline"></ion-icon><span>Reset PSW Personal</span></a></li>';
+                            echo '<li><a class="' . (($currentPage == 'form_asignarGrupos.php' || $currentPage == 'form_asignar_grupo1.php' || $currentPage == 'form_asignar_grupo2.php' || $currentPage == 'form_asignar_grupo3.php') ? 'active' : '') . '" href="../Asignar_Grupo/form_asignarGrupos.php"><ion-icon name="cube-outline"></ion-icon><span>Grupos</span></a></li>';
+                            echo '<li><a class="' . ($currentPage == 'form_asignarMateria.php' ? 'active' : '') . '" href="../Asignar_Materia/form_asignarMateria.php"><ion-icon name="color-palette-outline"></ion-icon><span>Materias</span></a></li>';
+                            echo '<li><a class="' . ($currentPage == 'form_agregarAlerta.php' ? 'active' : '') . '" href="../Alertas/form_agregarAlerta.php"><ion-icon name="alert-circle-outline"></ion-icon><span>Nueva Alerta</span></a></li>';
                             break;
 
                         
 
                         // Perfil ADMINISTRATIVO EN JEFE
                         case 'Administrativo_Jefe':
-                            echo '<a class="boton" href="../Inscripcion/form_procesa_inscripcion2.php">
+                            echo '<a class="boton ' . (($currentPage == 'form_procesa_inscripcion2.php' || $currentPage == 'form_calificacionAlumno.php') ? 'active' : '') . '" href="../Inscripcion/form_procesa_inscripcion2.php">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-school" width="36"
                                         height="36" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none"
                                         stroke-linecap="round" stroke-linejoin="round">
@@ -485,46 +505,50 @@
                                         <path d="M22 9l-10 -4l-10 4l10 4l10 -4v6" />
                                         <path d="M6 10.6v5.4a6 3 0 0 0 12 0v-5.4" />
                                     </svg>
-                                    <span> Alumnos</span>
+                                    <span>Alumnos</span>
                                 </a>';
-                            echo '<li><a href="../Asignar_Grupo/form_asignarGrupos"><ion-icon name="home-outline"></ion-icon><span>Grupos</span></a></li>';
-                            echo '<li><a href="../Asignar_Materia/form_asignarMateria.php"><ion-icon name="book-outline"></ion-icon><span>Materias</span></a></li>';
-                            echo '<li><a href="../Alertas/form_agregarAlerta.php"><ion-icon name="clipboard-outline"></ion-icon><span>Alertas</span></a></li>';
-                            echo '<li><a href="../Calificaciones/form_habilitar_subida"><ion-icon name="clipboard-outline"></ion-icon><span>Acciones</span></a></li>';
+                            echo '<li><a class="' . ($currentPage == 'form_inscripcion_alumno.php' ? 'active' : '') . '" href="../Inscripcion/form_inscripcion_alumno.php"><ion-icon name="person-outline"></ion-icon><span>Inscripción</span></a></li>';
+                            echo '<li><a class="' . (($currentPage == 'form_docente_f19.php' || $currentPage == 'form_tablaF19.php' || $currentPage == 'form_editar_docente.php') ? 'active' : '') . '" href="../Docentes/form_docente_f19.php"><ion-icon name="person-outline"></ion-icon><span>Personal y F19</span></a></li>';
+                            echo '<li><a class="' . ($currentPage == 'form_olvidar_password.php' ? 'active' : '') . '" href="../Usuarios/form_olvidar_password.php"><ion-icon name="lock-open-outline"></ion-icon><span>Reset PSW Personal</span></a></li>';
+                            echo '<li><a class="' . (($currentPage == 'form_asignarGrupos.php' || $currentPage == 'form_asignar_grupo1.php' || $currentPage == 'form_asignar_grupo2.php' || $currentPage == 'form_asignar_grupo3.php') ? 'active' : '') . '" href="../Asignar_Grupo/form_asignarGrupos.php"><ion-icon name="cube-outline"></ion-icon><span>Grupos</span></a></li>';
+                            echo '<li><a class="' . ($currentPage == 'form_asignarMateria.php' ? 'active' : '') . '" href="../Asignar_Materia/form_asignarMateria.php"><ion-icon name="color-palette-outline"></ion-icon><span>Materias</span></a></li>';
+                            echo '<li><a class="' . ($currentPage == 'form_agregarAlerta.php' ? 'active' : '') . '" href="../Alertas/form_agregarAlerta.php"><ion-icon name="alert-circle-outline"></ion-icon><span>Nueva Alerta</span></a></li>';
                             break;
 
                         // Perfil DIRECTIVO
                         case 'Directivo':
-                            echo '<a class="boton" href="../Inscripcion/form_procesa_inscripcion2.php">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-school" width="36"
-                                        height="36" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none"
-                                        stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M22 9l-10 -4l-10 4l10 4l10 -4v6" />
-                                        <path d="M6 10.6v5.4a6 3 0 0 0 12 0v-5.4" />
-                                    </svg>
-                                    <span>Alumnos</span>
-                                </a>';
-                            echo '<li><a href="#"><ion-icon name="home-outline"></ion-icon><span>Dashboard Directivo</span></a></li>';
-                            echo '<li><a href="#"><ion-icon name="people-outline"></ion-icon><span>Gestionar Personal</span></a></li>';
-                            echo '<li><a href="#"><ion-icon name="bulb-outline"></ion-icon><span>Planificación Estratégica</span></a></li>';
+                            echo '<a class="' . ($currentPage == 'form_alerta.php' ? 'active' : '') . '" href="../Alertas/form_alerta.php"><ion-icon name="document-text-outline"></ion-icon><span>Alertas</span></a>';
+                            // echo '<li><a class="' . ($currentPage == 'form_inscripcion_alumno.php' ? 'active' : '') . '" href="../Inscripcion/form_inscripcion_alumno.php"><ion-icon name="person-outline"></ion-icon><span>Inscripción</span></a></li>';
+                            // echo '<li><a class="' . (($currentPage == 'form_docente_f19.php' || $currentPage == 'form_tablaF19.php' || $currentPage == 'form_editar_docente.php') ? 'active' : '') . '" href="../Docentes/form_docente_f19.php"><ion-icon name="person-outline"></ion-icon><span>Personal y F19</span></a></li>';
+                            echo '<li><a class="' . ($currentPage == 'form_alta_docente.php' ? 'active' : '') . '" href="../Docentes/form_alta_docente.php"><ion-icon name="person-add-outline"></ion-icon><span>Registrar Personal</span></a></li>';
+                            echo '<li><a class="' . (($currentPage == 'form_perfilUsuario.php' || $currentPage == 'form_modificar_perfil.php') ? 'active' : '') . '" href="../Usuarios/form_perfilUsuario.php"><ion-icon name="people-outline"></ion-icon><span>Gestionar Usuarios</span></a></li>';
+                            // echo '<li><a class="' . ($currentPage == 'form_alerta.php' ? 'active' : '') . '" href="../Alertas/form_alerta.php"><ion-icon name="document-text-outline"></ion-icon><span>Alertas</span></a></li>';
+                            echo '<li><a class="' . ($currentPage == 'form_agregarAlerta.php' ? 'active' : '') . '" href="../Alertas/form_agregarAlerta.php"><ion-icon name="alert-circle-outline"></ion-icon><span>Nueva Alerta</span></a></li>';
+                            // echo '<li><a class="' . ($currentPage == 'form_olvidar_password.php' ? 'active' : '') . '" href="../Usuarios/form_olvidar_password.php"><ion-icon name="lock-open-outline"></ion-icon><span>Reset PSW Personal</span></a></li>';
+                            // echo '<li><a class="' . (($currentPage == 'form_asignarGrupos.php' || $currentPage == 'form_asignar_grupo1.php' || $currentPage == 'form_asignar_grupo2.php' || $currentPage == 'form_asignar_grupo3.php') ? 'active' : '') . '" href="../Asignar_Grupo/form_asignarGrupos.php"><ion-icon name="cube-outline"></ion-icon><span>Grupos</span></a></li>';
+                            // echo '<li><a class="' . ($currentPage == 'form_asignarMateria.php' ? 'active' : '') . '" href="../Asignar_Materia/form_asignarMateria.php"><ion-icon name="color-palette-outline"></ion-icon><span>Materias</span></a></li>';
+                            // echo '<li><a class="' . (($currentPage == 'form_calAsis_alumnos.php' || $currentPage == 'form_asistencias_alumnos_p1.php' || $currentPage == 'form_asistencias_alumnos_p2.php' || $currentPage == 'form_asistencias_alumnos_p3.php' 
+                                                    // || $currentPage == 'form_caliAsis_alumnos_p1.php' || $currentPage == 'form_caliAsis_alumnos_p2.php' || $currentPage == 'form_caliAsis_alumnos_p3.php') ? 'active' : '') . '" href="../Calificaciones/form_calAsis_alumnos.php"><ion-icon name="book-outline"></ion-icon><span>Asis. y Califcsns.</span></a></li>';
+                            echo '<li><a class="' . ($currentPage == 'form_reportesDocentes.php' ? 'active' : '') . '" href="../Reportes/form_reportesDocentes.php"><ion-icon name="documents-outline"></ion-icon><span>Reportes Personal</span></a></li>';
+                            // echo '<li><a class="' . ($currentPage == 'form_habilitar_subida.php' ? 'active' : '') . '" href="../Calificaciones/form_habilitar_subida.php"><ion-icon name="construct-outline"></ion-icon><span>Acciones del Sistema</span></a></li>';
                             break;
 
                         // Perfil DIRECTIVO Y DOCENTE
                         case 'Directivo-docente':
-                            echo '<a class="boton" href="../Inscripcion/form_procesa_inscripcion2.php">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-school" width="36"
-                                        height="36" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none"
-                                        stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M22 9l-10 -4l-10 4l10 4l10 -4v6" />
-                                        <path d="M6 10.6v5.4a6 3 0 0 0 12 0v-5.4" />
-                                    </svg>
-                                    <span>Alumnos</span>
-                                </a>';
-                            echo '<li><a href="#"><ion-icon name="home-outline"></ion-icon><span>Dashboard Directivo</span></a></li>';
-                            echo '<li><a href="#"><ion-icon name="people-outline"></ion-icon><span>Gestionar Personal</span></a></li>';
-                            echo '<li><a href="#"><ion-icon name="bulb-outline"></ion-icon><span>Planificación Estratégica</span></a></li>';
+                            echo '<a class="' . ($currentPage == 'form_alerta.php' ? 'active' : '') . '" href="../Alertas/form_alerta.php"><ion-icon name="document-text-outline"></ion-icon><span>Alertas</span></a>';
+                            echo '<li><a class="' . ($currentPage == 'form_agregarAlerta.php' ? 'active' : '') . '" href="../Alertas/form_agregarAlerta.php"><ion-icon name="alert-circle-outline"></ion-icon><span>Nueva Alerta</span></a></li>';
+                            // echo '<li><a class="' . ($currentPage == 'form_inscripcion_alumno.php' ? 'active' : '') . '" href="../Inscripcion/form_inscripcion_alumno.php"><ion-icon name="person-outline"></ion-icon><span>Inscripción</span></a></li>';
+                            // echo '<li><a class="' . (($currentPage == 'form_docente_f19.php' || $currentPage == 'form_tablaF19.php' || $currentPage == 'form_editar_docente.php') ? 'active' : '') . '" href="../Docentes/form_docente_f19.php"><ion-icon name="person-outline"></ion-icon><span>Personal y F19</span></a></li>';
+                            echo '<li><a class="' . ($currentPage == 'form_alta_docente.php' ? 'active' : '') . '" href="../Docentes/form_alta_docente.php"><ion-icon name="person-add-outline"></ion-icon><span>Registrar Personal</span></a></li>';
+                            // echo '<li><a class="' . (($currentPage == 'form_perfilUsuario.php' || $currentPage == 'form_modificar_perfil.php') ? 'active' : '') . '" href="../Usuarios/form_perfilUsuario.php"><ion-icon name="people-outline"></ion-icon><span>Gestionar Usuarios</span></a></li>';
+                            // echo '<li><a class="' . ($currentPage == 'form_alerta.php' ? 'active' : '') . '" href="../Alertas/form_alerta.php"><ion-icon name="document-text-outline"></ion-icon><span>Alertas</span></a></li>';
+                            // echo '<li><a class="' . ($currentPage == 'form_olvidar_password.php' ? 'active' : '') . '" href="../Usuarios/form_olvidar_password.php"><ion-icon name="lock-open-outline"></ion-icon><span>Reset PSW Personal</span></a></li>';
+                            // echo '<li><a class="' . (($currentPage == 'form_asignarGrupos.php' || $currentPage == 'form_asignar_grupo1.php' || $currentPage == 'form_asignar_grupo2.php' || $currentPage == 'form_asignar_grupo3.php') ? 'active' : '') . '" href="../Asignar_Grupo/form_asignarGrupos.php"><ion-icon name="cube-outline"></ion-icon><span>Grupos</span></a></li>';
+                            // echo '<li><a class="' . ($currentPage == 'form_asignarMateria.php' ? 'active' : '') . '" href="../Asignar_Materia/form_asignarMateria.php"><ion-icon name="color-palette-outline"></ion-icon><span>Materias</span></a></li>';
+                            echo '<li><a class="' . (($currentPage == 'form_calAsis_alumnos.php' || $currentPage == 'form_asistencias_alumnos_p1.php' || $currentPage == 'form_asistencias_alumnos_p2.php' || $currentPage == 'form_asistencias_alumnos_p3.php' 
+                                                    || $currentPage == 'form_caliAsis_alumnos_p1.php' || $currentPage == 'form_caliAsis_alumnos_p2.php' || $currentPage == 'form_caliAsis_alumnos_p3.php') ? 'active' : '') . '" href="../Calificaciones/form_calAsis_alumnos.php"><ion-icon name="book-outline"></ion-icon><span>Asis. y Califcsns.</span></a></li>';
+                            echo '<li><a class="' . ($currentPage == 'form_reportesDocentes.php' ? 'active' : '') . '" href="../Reportes/form_reportesDocentes.php"><ion-icon name="documents-outline"></ion-icon><span>Reportes Personal</span></a></li>';
+                            // echo '<li><a class="' . ($currentPage == 'form_habilitar_subida.php' ? 'active' : '') . '" href="../Calificaciones/form_habilitar_subida.php"><ion-icon name="construct-outline"></ion-icon><span>Acciones del Sistema</span></a></li>';
                             break;
 
                         
@@ -539,4 +563,43 @@
         </div>
     </form>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+    const sidebar = document.querySelector(".barra-lateral");
+    const mainContent = document.querySelector("main");
+    const html = document.documentElement;
+
+    // Aplicar el estado de la barra lateral guardado en localStorage
+    const sidebarState = localStorage.getItem("sidebarState");
+
+    if (sidebarState === "collapsed") {
+        html.classList.add("sidebar-collapsed");
+        sidebar.classList.add("collapsed");
+        mainContent.classList.add("min-main");
+    } else {
+        html.classList.remove("sidebar-collapsed");
+        sidebar.classList.remove("collapsed");
+        mainContent.classList.remove("min-main");
+    }
+
+    // Forzar la visibilidad después de un breve retardo
+    setTimeout(() => {
+        sidebar.style.visibility = 'visible'; // Mostrar la barra lateral
+    }, 50); // El tiempo en milisegundos puede ajustarse si es necesario
+
+    // Alternar el estado de la barra lateral al hacer clic en el botón
+    document.getElementById("toggle-sidebar").addEventListener("click", function() {
+        html.classList.toggle("sidebar-collapsed");
+        sidebar.classList.toggle("collapsed");
+        mainContent.classList.toggle("min-main");
+
+        // Guardar el nuevo estado en localStorage
+        if (html.classList.contains("sidebar-collapsed")) {
+            localStorage.setItem("sidebarState", "collapsed");
+        } else {
+            localStorage.setItem("sidebarState", "expanded");
+        }
+    });
+});
+    </script>
     <main>
