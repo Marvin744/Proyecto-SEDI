@@ -1,0 +1,52 @@
+/* General */
+body {
+    color: #666666;
+    font-size: 14px;
+    font-family: poppins;
+    line-height: 1.80857;
+    font-weight: normal;
+    overflow-x: hidden;
+}
+
+/* Header Logo */
+.logo {
+    width: 15%;
+    float: left;
+}
+
+/* Navbar */
+.navbar-light .navbar-nav .active>.nav-link,
+.navbar-light .navbar-nav .nav-link.active,
+.navbar-light .navbar-nav .nav-link.show,
+.navbar-light .navbar-nav .show>.nav-link {
+    color: #df9911;
+}
+
+.navbar-expand-lg .navbar-nav .nav-link {
+    padding-right: 15px;
+    padding-left: 15px;
+    font-size: 18px;
+    color: #000000;
+}
+
+.navbar-light .navbar-nav .nav-link:hover {
+    color: #df9911;
+}
+
+/* Search Icon */
+.search_icon {
+    font-size: 18px;
+    color: #000;
+    padding-left: 30px;
+}
+
+/* Full Width */
+.full {
+    float: left;
+    width: 100%;
+}
+
+/* Padding */
+.padding_left_15 {
+    padding-left: 15px;
+}
